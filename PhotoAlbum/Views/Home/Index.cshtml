@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container">
+    <br />
+    <div style="width:90%; margin:0 auto;">
+        <table id="photoAlbum" class="table table-striped table-bordered dt-responsive nowrap" width:"100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Photo title</th>
+                    <th>Album name</th>
+                    <th>Thumbnail image</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(function () {
+            var photoList = $('#photoAlbum').DataTable({
+                serverSide: true,
+                processing: true,
+
+                ajax: {
+                    url: '@Url.Action("Data", "Home")',
+                    type: "POST",
+                },
+                columns: [
+                    { data: "PhotoTitle", title: "Photo title" },
+                    { data: "AlbumTitle", title: "Album name" },
+                    {
+                        "render": function (data, type, JsonResultRow, meta) {
+                            return '<img src="' + JsonResultRow.ThumbnailUrl + '" onclick= ShowImage("' + JsonResultRow.Url + '")>';
+                        },
+                        orderable: false
+                    }
+
+                ]
+            });
+        });
+        function ShowImage(image) {
+
+            open(image);
+        }
+    </script>
+
+}
+
